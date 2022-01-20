@@ -29,7 +29,7 @@ class VideoStream:
     """Camera object that controls video streaming from the Picamera"""
     def __init__(self,resolution=(640,480),framerate=30):
         # Initialize the PiCamera and the camera image stream
-        self.stream = cv2.VideoCapture("test.mp4")
+        self.stream = cv2.VideoCapture("/home/lionel/Desktop/TDI_speed/speedDetection/night.mp4")
         ret = self.stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
         ret = self.stream.set(3,resolution[0])
         ret = self.stream.set(4,resolution[1])  
@@ -161,7 +161,7 @@ videostream = VideoStream(resolution=(imW,imH),framerate=30).start()
 #time.sleep(1)
 
 #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
-cap = cv2.VideoCapture("test.mp4")
+cap = cv2.VideoCapture("/home/lionel/Desktop/TDI_speed/speedDetection/night.mp4")
 def get_bbox(videostream):
     ymin = 0
     xmin =0
@@ -242,8 +242,8 @@ def get_bbox(videostream):
                 cx_list.append(cx)
                 # print("cx_list",cx_list)
                 
-                cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), (0, 0, 255), 1)
-                cv2.circle(frame, (cx, cy), 5, (0, 255, 0), -1)
+                # cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), (0, 0, 255), 1)
+                # cv2.circle(frame, (cx, cy), 5, (0, 255, 0), -1)
                 
                 
                 
@@ -253,8 +253,8 @@ def get_bbox(videostream):
                 label = '%s: %d%%' % (object_name, int(scores[i]*100)) # Example: 'person: 72%'
                 labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
                 label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
-                cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
-                cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
+                # cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
+                # cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
                 cnt +=1
 
                 max_cy_index = cy_list.index(max(cy_list)) 
@@ -262,7 +262,7 @@ def get_bbox(videostream):
 
                 max_cy_ = max(cy_list)
 
-                cv2.circle(frame,(max_cx_,max_cy_),10,(0,255,255),-1)
+                # cv2.circle(frame,(max_cx_,max_cy_),10,(0,255,255),-1)
                
             
 
@@ -281,7 +281,7 @@ def get_bbox(videostream):
         frame_rate_calc= 1/time1
         print(frame_rate_calc)
         print("cnt",cnt)
-        cv2.imshow("xyz",frame)
+        # cv2.imshow("xyz",frame)
         k = cv2.waitKey(1) & 0xff
         if k == ord('q'):
            break

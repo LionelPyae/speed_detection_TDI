@@ -85,24 +85,9 @@ Angle = math.cos(Angle)
 
 
 
-
-# Play until the user decides to stop    ## SENDING IMAGES TO SERVER FOR PROCESSING THERE>>>>>>>>>>>>>>>>>>>>>
-#for sending data to server
-# def send(img):
-#     retval, buffer = cv2.imencode(".jpg", img)
-#     img = base64.b64encode(buffer).decode('utf-8')
-#     data = json.dumps({"image1": img, "id" : "2345AB"})
-#     response = requests.post(api, data=data, timeout=5, headers = {'Content-type': 'application/json', 'Accept': 'text/plain'})
-#     try:
-#        data = response.json()     
-#        print(data)                
-#     except requests.exceptions.RequestException:
-#        print(response.text)
-
-
 #make line
 vs = VideoStream()
-vs.stream = cv2.VideoCapture("test.mp4")
+vs.stream = cv2.VideoCapture("/home/lionel/Desktop/TDI_speed/speedDetection/test.mp4")
 frame = vs.read()
 
 frame_ = frame.copy()
@@ -133,12 +118,6 @@ print("last",lasttrack)
 print("mid",midtrack)
 
 
-
-
-
-
-
-
 ## Function to Auto Calculate the detection range
 '''takes input from users - speed_limit,gets FPS,distance,//pt2 and pt1 from line.py 
 auto calibrates the last reference line on frame, in order to get min of 2 images for detection, code calibrates for ANY SPEED RANGE and any 
@@ -159,12 +138,6 @@ def max_images(speed_limit,fps,distance,midtrack,starttrack): #midtrack is last 
     pxl_mtr = ((midtrack-starttrack)/distance)
     pt3 = delta*pxl_mtr
     pt3_pxl = round(midtrack+pt3)
-    # print("max_dstnc",max_dstnc)
-    # print("distance",distance)
-    # print("delta",delta)
-    # print("pxl_mtr",pxl_mtr)
-    # print("pt3",pt3)
-    # print("pt3_pxl",pt3_pxl)
   else:
     pt3_pxl = midtrack+100
     print("pt3",pt3_pxl)
@@ -207,19 +180,23 @@ while True:
     fps = frame_rate_calc
     
     
-    #print("FPS",fps)
-    
+    print("FPS",fps)
     w = int(xmax - xmin)
     h = int(ymax-ymin)
     #cx =int((w/2) + xmin)
     #cy = int((h/2)+ymin)
+
+###Updated by Lionel and Alex
     if flag3 > 0:
         roi = frame[ymin-50:ymin + h, xmin:xmin+ w]
 
         cv2.imshow(f'lane_{flag3}', roi)
         flag3 += 1
-        if flag3 == 3:
+        if flag3 == 4:
             flag3 = -1
+
+        cv2.imwrite(f'lane_{flag3}.jpg',roi)
+        # print(roi.shape())
 
     
     
@@ -291,14 +268,10 @@ while True:
                     cv2.imshow("Lane_1", roi)
                     flag3 = 1
 
-
-                    # write_name = 'corners_found' + str(cnt1) + '.jpg'
-                    # cv2.imwrite(write_name, roi)
-                    # cv2.imwrite(os.path.join(path, 'carimage_l2_' + str(cnt1)) + '.jpg', roi)
-                    
                     flag = True
                     font = cv2.FONT_HERSHEY_SIMPLEX
-                    cv2.putText(frame, str(int(speed)), (xmin, ymin), font, 2, (255, 255, 255), 8, cv2.LINE_AA)
+                    cv2.putText(frame, str(int(speed)), (xmin, ymin), font, 2, (255, 0, 0), 8, cv2.LINE_AA)
+                    cv2.imwrite('Lane_1.jpg',roi)
                     # # print("ROI : ", roi)
                     # path = '/home/lionel/Desktop/TDI_speed/speedDetection/'
                     # cnt1 = cnt1
